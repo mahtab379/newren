@@ -24,7 +24,7 @@ class MyTaskHandler extends TaskHandler {
     // You can use the getData function to get the stored data.
     final customData =
         await FlutterForegroundTask.getData<String>(key: 'customData');
-    print('customData: $customData');
+    debugPrint('customData: $customData');
   }
 
   @override
@@ -49,7 +49,7 @@ class MyTaskHandler extends TaskHandler {
   @override
   void onButtonPressed(String id) {
     // Called when the notification button on the Android platform is pressed.
-    print('onButtonPressed >> $id');
+    debugPrint('onButtonPressed >> $id');
   }
 
   @override
@@ -117,7 +117,7 @@ class _ExamplePageState extends State<ExamplePage> {
         playSound: false,
       ),
       foregroundTaskOptions: const ForegroundTaskOptions(
-        interval: 5000,
+        interval: 1000,
         isOnceEvent: false,
         autoRunOnBoot: true,
         allowWakeLock: true,
@@ -139,7 +139,7 @@ class _ExamplePageState extends State<ExamplePage> {
       final isGranted =
           await FlutterForegroundTask.openSystemAlertWindowSettings();
       if (!isGranted) {
-        print('SYSTEM_ALERT_WINDOW permission denied!');
+        debugPrint('SYSTEM_ALERT_WINDOW permission denied!');
         return false;
       }
     }
@@ -151,7 +151,7 @@ class _ExamplePageState extends State<ExamplePage> {
     final ReceivePort? receivePort = FlutterForegroundTask.receivePort;
     final bool isRegistered = _registerReceivePort(receivePort);
     if (!isRegistered) {
-      print('Failed to register receivePort!');
+      debugPrint('Failed to register receivePort!');
       return false;
     }
 
@@ -180,13 +180,13 @@ class _ExamplePageState extends State<ExamplePage> {
     _receivePort = newReceivePort;
     _receivePort?.listen((message) {
       if (message is int) {
-        print('eventCount: $message');
+        debugPrint('eventCount: $message');
       } else if (message is String) {
         if (message == 'onNotificationPressed') {
           Navigator.of(context).pushNamed('/resume-route');
         }
       } else if (message is DateTime) {
-        print('timestamp: ${message.toString()}');
+        debugPrint('timestamp: ${message.toString()}');
       }
     });
 
@@ -237,8 +237,8 @@ class _ExamplePageState extends State<ExamplePage> {
   Widget _buildContentView() {
     buttonBuilder(String text, {VoidCallback? onPressed}) {
       return ElevatedButton(
-        child: Text(text),
         onPressed: onPressed,
+        child: Text(text),
       );
     }
 
